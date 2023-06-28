@@ -91,7 +91,7 @@ function IsConfigured() {
       .catch((error) => {
         console.error("Error retrieving token:", error);
       });
-  }, []);
+  }, [setBearerToken]);
 
   return (
     <p className="mt-3 dark:text-white">{bearerToken ? "true" : "false"}</p>

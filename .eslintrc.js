@@ -8,9 +8,11 @@ module.exports = {
   },
   extends: [
     "plugin:prettier/recommended",
+    "react-app",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
   ],
   overrides: [],
   parser: "@typescript-eslint/parser",
@@ -18,7 +20,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["prettier", "@typescript-eslint", "react"],
+  plugins: ["prettier", "@typescript-eslint", "react", "@tanstack/query"],
   rules: {
     "prettier/prettier": "error",
     "no-unused-vars": "off",

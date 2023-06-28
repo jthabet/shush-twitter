@@ -28,7 +28,7 @@ chrome.contextMenus.onClicked.addListener((item) => {
       { url: "https://twitter.com", name: "ct0" },
       (response) => {
         let csrfToken = response.value;
-        chrome.storage.local.get("bearer", function (result) {
+        chrome.storage.local.get("bearer").then((result) => {
           addKeyword(result.bearer, item.selectionText, csrfToken)
             .then((response) => {
               console.info(
