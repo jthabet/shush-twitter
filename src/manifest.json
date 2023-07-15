@@ -1,5 +1,5 @@
 {
-    "name": "Twitter shush",
+    "name": "Twitter easy mute",
     "description": "Easily mute words on twitter by selecting them!",
     "version": "0.1.0",
     "manifest_version": 3,
@@ -7,10 +7,12 @@
         "storage",
         "contextMenus",
         "cookies",
-        "downloads"
+        "downloads",
+        "notifications"
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "type": "module"
     },
     "action": {
         "default_popup": "popup.html",

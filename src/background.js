@@ -1,9 +1,10 @@
 // Add a listener to create the initial context menu items,
 // context menu items only need to be created at runtime.onInstalled
+
 chrome.runtime.onInstalled.addListener((details) => {
   chrome.contextMenus.create({
     id: "twitter_mute_word_select",
-    title: "Twitter mute",
+    title: "mute keyword",
     type: "normal",
     contexts: ["selection"],
     documentUrlPatterns: ["*://twitter.com/*"],
@@ -23,27 +24,37 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 // Mute the selected keyword when the user clicks the contextual menu
 chrome.contextMenus.onClicked.addListener((item) => {
+  const imageUrl = new URL(
+    "icons/tabler-icon-eye-off-black@128.png?as=webp&width=250",
+    import.meta.url
+  );
+
   if (item.menuItemId === "twitter_mute_word_select") {
     chrome.cookies.get(
       { url: "https://twitter.com", name: "ct0" },
       (response) => {
-        let csrfToken = response.value;
-        chrome.storage.local.get("bearer").then((result) => {
-          addKeyword(result.bearer, item.selectionText, csrfToken)
-            .then((response) => {
-              console.info(
-                "successfully added keyword : %s",
-                item.selectionText
-              );
-            })
-            .catch((reason) => {
-              chrome.storage.local.get("options", function (result) {
-                if (result.options.debug) {
-                  console.error(reason);
-                }
+        let csrfToken = response?.value;
+        chrome.storage.local
+          .get("bearer")
+          .then((result) => {
+            addKeyword(result.bearer, item.selectionText, csrfToken)
+              .then(() => {
+                console.info(
+                  "successfully added keyword : %s",
+                  item.selectionText
+                );
+                chrome.notifications.create("", {
+                  iconUrl: imageUrl.pathname,
+                  type: "basic",
+                  title: "Twitter Shush",
+                  message: item.selectionText,
+                });
+              })
+              .catch((reason) => {
+                console.error(reason);
               });
-            });
-        });
+          })
+          .catch((err) => console.error(err));
       }
     );
   }
